@@ -1,5 +1,36 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
+
+import { ref } from 'vue';
+
+const searchKey = ref('');
+
+// const searchResults = computed(() => {
+
+// console.log(searchKey.value);
+
+//     let searchr = search(searchKey.value);
+
+// console.log(searchr);
+
+//     return searchr;
+// });
+
+// async function search(q) {
+//   q = q.replace(/ /g, '+');
+
+// console.log(q);
+
+//   let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${q}&fields=items(id,volumeInfo(title,publishedDate))&maxResults=10`);
+//   let json = await response.json();
+//   // console.log('Objecto: ' + JSON.stringify(json.items[0]));
+//   // console.log('Id: ' + json.items[0].id);
+//   // console.log('Titulo: ' + json.items[0].volumeInfo.title);
+//   // console.log('Fecha: ' + json.items[0].volumeInfo.publishedDate);
+//   return json.items;
+// }
+
+
 </script>
 
 <template>
@@ -37,7 +68,7 @@ import { RouterLink, RouterView } from 'vue-router';
             ></button>
           </div>
           <div class="offcanvas-body">
-            <!-- sign buttons or prfile dropdown -->
+            <!-- sign buttons or profile dropdown -->
             <!-- <div class="container p-4">
               <div class="row">
                 <div class="col-3 col-md-6">
@@ -62,22 +93,35 @@ import { RouterLink, RouterView } from 'vue-router';
         class="container pt-2 pb-2 border-top"
         role="button"
         data-bs-toggle="dropdown"
+        aria-haspopup="true"
         aria-expanded="false"
       >
         <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <input
+            type="search"
+            placeholder="Search"
+            class="form-control me-2"
+            v-model="searchKey"
+          />
           <button class="btn" type="submit">
             <img src="@/assets/icons/search-icon.svg" alt="Search" />
           </button>
           <ul class="container dropdown-menu">
-            <li>
-              <a class="dropdown-item" href="#">Action</a>
+            <router-link to="/" class="text-decoration-none">
+              Este es el 1
+            </router-link>
+            <a href="/register" class="dropdown-item">Este es el 2</a>
+            <li class="dropdown-item">
+              <router-link to="/library">Library</router-link>
             </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li>
-              <router-link to="/library" class="dropdown-item">Library</router-link>
+            <router-link to="/login" class="text-decoration-none">
+              <li class="dropdown-item">
+                Este es el 4
+              </li>
+            </router-link>
+
+            <li v-for="(result, index) in searchResults" :key="index"  class="dropdown-item">
+              <router-link to="/">{{ index }}</router-link>
             </li>
           </ul>
         </form>

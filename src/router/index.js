@@ -10,14 +10,6 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('@/views/AboutView.vue')
-    },
-    {
       path: '/login',
       name: 'login',
       component: () => import('@/views/LogInView.vue')
@@ -26,6 +18,39 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () => import('@/views/RegisterView.vue')
+    },
+    {
+      path: '/library',
+      name: 'library',
+      component: () => import('@/views/LibraryView.vue')
+    },
+    {
+      path: '/about',
+      name: 'about',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('@/views/AboutView.vue')
+    },
+    {
+      path: '/help',
+      name: 'help',
+      component: () => import('@/views/HelpView.vue')
+    },
+    {
+      path: '/privacy-policy',
+      name: 'privacy-policy',
+      component: () => import('@/views/PrivacyPolicyView.vue')
+    },
+    {
+      path: '/legal-conditions',
+      name: 'legal-conditions',
+      component: () => import('@/views/LegalConditionsView.vue')
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: () => import('@/views/ForgotPasswordView.vue')
     }
   ]
 })
