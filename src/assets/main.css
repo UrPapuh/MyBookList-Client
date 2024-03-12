@@ -16,7 +16,9 @@
   font-style: normal;
 }
 
-header > *, .offcanvas-header, footer {
+header > *,
+.offcanvas-header,
+footer {
   background-color: #6a61b4;
 }
 
