@@ -50,7 +50,7 @@ console.log(results);
             <td>{{ result.volumeInfo.title }}</td>
           </router-link>
           <!-- authors -->
-          <td v-if="result.volumeInfo.authors">
+          <td class="row" v-if="result.volumeInfo.authors">
             <a v-for="(author,index) in result.volumeInfo.authors" :key="index">{{ author }}</a>
           </td>
           <td v-else>
