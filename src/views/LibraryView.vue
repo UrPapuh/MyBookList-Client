@@ -1,12 +1,18 @@
 <script setup>
 // import { RouterLink } from 'vue-router';
 
-import { watch ,  ref } from 'vue';
+import { watch , computed, ref } from 'vue';
 
 const searchKey = ref('');
-const searchResults = ref();
+const searchResults = ref({});
+const filters = ref('');
 
-watch(searchKey, async (q) => {
+const searchFilters = computed (() => {
+  return searchKey.value + filters.value;
+});
+
+watch(searchFilters, async (q) => {
+  // FALTA METERLE LOS FILTROS
   if (q) {
     q = q.replace(/ /g, '+');
 
@@ -37,6 +43,7 @@ watch(searchKey, async (q) => {
       class="form-control mb-4"
       v-model="searchKey"
     >
+    <input type="text" v-model="filters" class="form-control" disabled>
     <div class="table-responsive" v-if="searchKey && searchResults">
       <table class="table table-bordered text-center">
         <thead class="thead-dark">
