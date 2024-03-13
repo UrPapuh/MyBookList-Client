@@ -1,34 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
-
-// import { ref } from 'vue';
-
-// const searchKey = ref('');
-
-// const searchResults = computed(() => {
-
-// console.log(searchKey.value);
-
-//     let searchr = search(searchKey.value);
-
-// console.log(searchr);
-
-//     return searchr;
-// });
-
-// async function search(q) {
-//   q = q.replace(/ /g, '+');
-
-// console.log(q);
-
-//   let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${q}&fields=items(id,volumeInfo(title,publishedDate))&maxResults=10`);
-//   let json = await response.json();
-//   // console.log('Objecto: ' + JSON.stringify(json.items[0]));
-//   // console.log('Id: ' + json.items[0].id);
-//   // console.log('Titulo: ' + json.items[0].volumeInfo.title);
-//   // console.log('Fecha: ' + json.items[0].volumeInfo.publishedDate);
-//   return json.items;
-// }
 </script>
 
 <template>
@@ -127,22 +98,22 @@ import { RouterLink, RouterView } from 'vue-router';
     </div> -->
   </header>
 
-  <main>
+  <main class="container-fluid p-5">
     <router-view/>
   </main>
 
-  <footer class="container-fluid mt-4 py-5">
+  <footer class="container-fluid p-5 mt-auto">
     <div class="row">
       <div class="col-6 col-md-2 mb-3">
         <h5>Contact Us</h5>
         <ul class="nav flex-column">
           <li class="nav-item mb-2">
-            <a href="mailto:mybooklist@gmail.com" class="nav-link p-0 text-muted">
+            <a href="mailto:mybooklist@gmail.com" class="nav-link p-0 text-reset">
               mybooklist@gmail.com
             </a>
           </li>
           <li class="nav-item mb-2">
-            <a href="tel:+34 999 999 99" class="nav-link p-0 text-muted"> +34 999 999 99 </a>
+            <a href="tel:+34 999 999 99" class="nav-link p-0 text-reset"> +34 999 999 99 </a>
           </li>
         </ul>
       </div>
@@ -151,27 +122,27 @@ import { RouterLink, RouterView } from 'vue-router';
     <div class="row text-center d-flex justify-content-center pt-5">
       <div class="col-md-2">
         <h6 class="text-uppercase font-weight-bold">
-          <router-link to="/about" class="text-muted text-decoration-none">About Us</router-link>
+          <router-link to="/about" class="text-reset text-decoration-none">About Us</router-link>
         </h6>
       </div>
       <div class="col-md-2">
         <h6 class="text-uppercase font-weight-bold">
-          <router-link to="/legal-conditions" class="text-muted text-decoration-none">Legal Conditions</router-link>
+          <router-link to="/legal-conditions" class="text-reset text-decoration-none">Legal Conditions</router-link>
         </h6>
       </div>
       <div class="col-md-2">
         <h6 class="text-uppercase font-weight-bold">
-          <router-link to="/privacy-policy" class="text-muted text-decoration-none">Privacy Policy</router-link>
+          <router-link to="/privacy-policy" class="text-reset text-decoration-none">Privacy Policy</router-link>
         </h6>
       </div>
       <div class="col-md-2">
         <h6 class="text-uppercase font-weight-bold">
-          <router-link to="/help" class="text-muted text-decoration-none">Privacy Policy</router-link>
+          <router-link to="/help" class="text-reset text-decoration-none">Privacy Policy</router-link>
         </h6>
       </div>
     </div>
 
-    <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+    <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top border-dark">
       <p>&copy; 2022 Company, Inc. All rights reserved.</p>
       <ul class="list-unstyled d-flex">
         <li class="ms-3">
