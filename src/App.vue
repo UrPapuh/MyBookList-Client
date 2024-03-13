@@ -1,9 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
 
-import { ref } from 'vue';
+// import { ref } from 'vue';
 
-const searchKey = ref('');
+// const searchKey = ref('');
 
 // const searchResults = computed(() => {
 
@@ -29,8 +29,6 @@ const searchKey = ref('');
 //   // console.log('Fecha: ' + json.items[0].volumeInfo.publishedDate);
 //   return json.items;
 // }
-
-
 </script>
 
 <template>
@@ -88,7 +86,7 @@ const searchKey = ref('');
         </div>
       </div>
     </nav>
-    <div class="container-fluid dropdown">
+    <!-- <div class="container-fluid dropdown">
       <div
         class="container pt-2 pb-2 border-top"
         role="button"
@@ -126,7 +124,7 @@ const searchKey = ref('');
           </ul>
         </form>
       </div>
-    </div>
+    </div> -->
   </header>
 
   <main>
