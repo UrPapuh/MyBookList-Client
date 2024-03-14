@@ -1,5 +1,6 @@
 <script setup>
-// import { RouterLink } from 'vue-router';
+import TableView from '../components/TableView.vue';
+import CardView from '../components/CardView.vue';
 
 import { watch , computed, ref } from 'vue';
 
@@ -20,27 +21,20 @@ const searchFilters = computed (() => {
 });
 
 watch(searchFilters, async (q) => {
-  // FALTA METERLE LOS FILTROS
   if (q) {
     q = q.trim().replace(/ /g, '+');
 
-    let url = `https://www.googleapis.com/books/v1/volumes?q=${q}&fields=items(id,volumeInfo(title,authors,publisher,categories))&maxResults=10&printType=books`;
+    // let url = `https://www.googleapis.com/books/v1/volumes?q=${q}&fields=totalItems,items(id,volumeInfo(title,authors,publisher,categories,imageLinks/thumbnail))&maxResults=10&printType=books`;
 // console.log(url);
 
-    let response = await fetch(url);
+    let response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${q}&fields=totalItems,items(id,volumeInfo(title,authors,publisher,categories,imageLinks/thumbnail))&maxResults=10&printType=books`);
     let json = await response.json();
-    // console.log(response.status);
 
-    // console.log('Objecto: ' + JSON.stringify(json.items[0]));
-    // console.log('Id: ' + json.items[0].id);
-    // console.log('Titulo: ' + json.items[0].volumeInfo.title);
-    // console.log('Fecha: ' + json.items[0].volumeInfo.publishedDate);
-    // console.log(json);
+// console.log(response.status);
 
-  // let results = json.items;
-  // console.log(results);
+console.log(json);
 
-    searchResults.value = json.items;
+    searchResults.value = json;
   }
 });
 </script>
@@ -109,43 +103,31 @@ watch(searchFilters, async (q) => {
         </div>
       </div>
     </div> -->
-    <!-- content -->
-    <div class="table-responsive" v-if="searchFilters && searchResults">
-      <table class="table table-bordered">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Authors</th>
-            <th scope="col">Publisher</th>
-            <th scope="col">Categories</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(result, index) in searchResults" :key="index">
-            <!-- title with selfLink -->
-            <td scope="row">
-              <router-link to="/" class="text-decoration-none text-reset">
-              {{ result.volumeInfo.title }}
-              </router-link>
-            </td>
-            <!-- authors -->
-            <td v-if="result.volumeInfo.authors">
-              <a v-for="(author,index) in result.volumeInfo.authors" :key="index">{{ author }}</a>
-            </td>
-            <td v-else class="text-muted">unknown</td>
-            <!-- publisher -->
-            <td v-if="result.volumeInfo.publisher">
-              <a>{{ result.volumeInfo.publisher }}</a>
-            </td>
-            <td v-else class="text-muted">unknown</td>
-            <!-- categories -->
-            <td v-if="result.volumeInfo.categories">
-              <a v-for="(categorie,index) in result.volumeInfo.categories" :key="index">{{ categorie }}</a>
-            </td>
-            <td v-else class="text-muted">unknown</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- results -->
+    <div v-if="searchFilters && searchResults.items">
+      <div class="row my-3 align-items-center">
+        <div class="col-auto d-none d-md-block">{{ searchResults.totalItems }} resultados</div>
+        <div class="col-auto ms-auto">
+          <div>
+            <a href="" role="button" class="btn btn-primary btn-sm ms-1">
+              <img href="../assets/icons/table-icon.svg" class="fonticon-table" />
+              <span class="d-none d-md-inline">&nbsp;Ver lista</span>
+            </a>
+            <a href="" role="button" class="btn btn-primary btn-sm ms-1 disabled">
+              <img href="../assets/icons/grid-icon.svg" class="fonticon-table" />
+              <span class="d-none d-md-inline">&nbsp;Ver cuadricula</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- content -->
+      <div class="row">
+        <TableView :data="searchResults.items"></TableView>
+      </div>
+      <div class="row">
+        <CardView :data="searchResults.items"></CardView>
+      </div>
+      <!-- paginacion -->
     </div>
     <div v-else class="container-fluid p-4">
       <span>No hay resultados</span>

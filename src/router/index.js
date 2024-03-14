@@ -24,6 +24,16 @@ const router = createRouter({
       name: 'library',
       component: () => import('@/views/LibraryView.vue')
     },
+    // {
+    //   path: '/library/:id',
+    //   name: 'book',
+    //   component: () => import('@/views/LibraryView.vue')
+    // },
+    // {
+    //   path: '/library?q=:q&view=:view',
+    //   name: 'library',
+    //   component: () => import('@/views/LibraryView.vue')
+    // },
     {
       path: '/about',
       name: 'about',
@@ -52,7 +62,9 @@ const router = createRouter({
       name: 'forgot-password',
       component: () => import('@/views/ForgotPasswordView.vue')
     }
-  ]
+  ], 
+  sensitive: true,
+  strict: true,
 })
 
 export default router;

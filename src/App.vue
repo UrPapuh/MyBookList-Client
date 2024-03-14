@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from 'vue-router';
   <header class="sticky-top mb-4">
     <nav class="navbar">
       <div class="container-fluid">
-        <router-link to="/" class="navbar-brand">
+        <router-link :to="{name: 'home'}" class="navbar-brand">
           <img src="/favicon.ico" alt="Logo" />
           <span id="brand-name" class="ps-2">MyBookList</span>
         </router-link>
@@ -50,7 +50,7 @@ import { RouterLink, RouterView } from 'vue-router';
             </div> -->
             <ul class="navbar-nav nav-underline justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
-                <router-link to="/library" class="nav-link">Library</router-link>
+                <router-link :to="{name: 'library'}" class="nav-link">Library</router-link>
               </li>
             </ul>
           </div>
@@ -122,22 +122,22 @@ import { RouterLink, RouterView } from 'vue-router';
     <div class="row text-center d-flex justify-content-center pt-5">
       <div class="col-md-2">
         <h6 class="text-uppercase font-weight-bold">
-          <router-link to="/about" class="text-reset text-decoration-none">About Us</router-link>
+          <router-link :to="{name:'about'}" class="text-reset text-decoration-none">About Us</router-link>
         </h6>
       </div>
       <div class="col-md-2">
         <h6 class="text-uppercase font-weight-bold">
-          <router-link to="/legal-conditions" class="text-reset text-decoration-none">Legal Conditions</router-link>
+          <router-link :to="{name:'legal-conditions'}" class="text-reset text-decoration-none">Legal Conditions</router-link>
         </h6>
       </div>
       <div class="col-md-2">
         <h6 class="text-uppercase font-weight-bold">
-          <router-link to="/privacy-policy" class="text-reset text-decoration-none">Privacy Policy</router-link>
+          <router-link :to="{name:'privacy-policy'}" class="text-reset text-decoration-none">Privacy Policy</router-link>
         </h6>
       </div>
       <div class="col-md-2">
         <h6 class="text-uppercase font-weight-bold">
-          <router-link to="/help" class="text-reset text-decoration-none">Privacy Policy</router-link>
+          <router-link :to="{name:'help'}" class="text-reset text-decoration-none">Help</router-link>
         </h6>
       </div>
     </div>
