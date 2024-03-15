@@ -24,16 +24,11 @@ const router = createRouter({
       name: 'library',
       component: () => import('@/views/LibraryView.vue')
     },
-    // {
-    //   path: '/library/:id',
-    //   name: 'book',
-    //   component: () => import('@/views/LibraryView.vue')
-    // },
-    // {
-    //   path: '/library?q=:q&view=:view',
-    //   name: 'library',
-    //   component: () => import('@/views/LibraryView.vue')
-    // },
+    {
+      path: '/library/:bookId',
+      name: 'book',
+      component: () => import('@/views/BookView.vue')
+    },
     {
       path: '/about',
       name: 'about',

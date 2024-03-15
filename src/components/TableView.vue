@@ -21,8 +21,11 @@ const props = defineProps([
         <tr v-for="(result, index) in props.data" :key="index">
           <!-- title with selfLink -->
           <td scope="row">
-            <router-link to="/" class="text-decoration-none text-reset">
-            {{ result.volumeInfo.title }}
+            <router-link
+              :to="{name: 'book', params: {bookId: result.id}}"
+              class="text-decoration-none text-reset"
+            >
+              {{ result.volumeInfo.title }}
             </router-link>
           </td>
           <!-- authors -->

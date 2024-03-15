@@ -1,10 +1,12 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
+// import SearchBox from './components/SearchBox.vue';
+
 </script>
 
 <template>
   <header class="sticky-top mb-4">
-    <nav class="navbar">
+    <nav class="navbar navbar-expand-md">
       <div class="container-fluid">
         <router-link :to="{name: 'home'}" class="navbar-brand">
           <img src="/favicon.ico" alt="Logo" />
@@ -36,66 +38,46 @@ import { RouterLink, RouterView } from 'vue-router';
               aria-label="Close"
             ></button>
           </div>
-          <div class="offcanvas-body">
+          <div class="offcanvas-body d-flex flex-column flex-md-row justify-content-md-end">
+
             <!-- sign buttons or profile dropdown -->
-            <!-- <div class="container p-4">
-              <div class="row">
-                <div class="col-3 col-md-6">
-                  <a class="btn btn-warning" href="">Sign Up</a>
+
+
+
+                <div class="order-0 order-md-1 d-flex flex-column flex-md-row align-items-center">
+
+                    <div class="">
+                      <router-link
+                        :to="{name: 'login'}"
+                        class="btn btn-primary">
+                        Sign In
+                      </router-link>
+                    </div>
+
+                    <div class="">
+                      <router-link
+                        :to="{name: 'register'}"
+                        class="btn btn-primary">
+                        Sign Up
+                      </router-link>
+                    </div>
+
                 </div>
-                <div class="col-3 col-md-6">
-                  <a class="btn btn-warning" href="">Sign In</a>
+
+                <div class="order-1 order-md-0 me-auto">
+                  <ul class="navbar-nav nav-underline flex-grow-1">
+                    <li class="nav-item">
+                      <router-link :to="{name: 'library', query: {mode: 'list'}}" class="nav-link">Library</router-link>
+                    </li>
+                  </ul>
                 </div>
               </div>
-            </div> -->
-            <ul class="navbar-nav nav-underline justify-content-end flex-grow-1 pe-3">
-              <li class="nav-item">
-                <router-link :to="{name: 'library'}" class="nav-link">Library</router-link>
-              </li>
-            </ul>
-          </div>
+
+
         </div>
       </div>
     </nav>
-    <!-- <div class="container-fluid dropdown">
-      <div
-        class="container pt-2 pb-2 border-top"
-        role="button"
-        data-bs-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        <form class="d-flex" role="search">
-          <input
-            type="search"
-            placeholder="Search"
-            class="form-control me-2"
-            v-model="searchKey"
-          />
-          <button class="btn" type="submit">
-            <img src="@/assets/icons/search-icon.svg" alt="Search" />
-          </button>
-          <ul class="container dropdown-menu">
-            <router-link to="/" class="text-decoration-none">
-              Este es el 1
-            </router-link>
-            <a href="/register" class="dropdown-item">Este es el 2</a>
-            <li class="dropdown-item">
-              <router-link to="/library">Library</router-link>
-            </li>
-            <router-link to="/login" class="text-decoration-none">
-              <li class="dropdown-item">
-                Este es el 4
-              </li>
-            </router-link>
-
-            <li v-for="(result, index) in searchResults" :key="index"  class="dropdown-item">
-              <router-link to="/">{{ index }}</router-link>
-            </li>
-          </ul>
-        </form>
-      </div>
-    </div> -->
+    <!-- <SearchBox /> -->
   </header>
 
   <main class="container-fluid p-5">
