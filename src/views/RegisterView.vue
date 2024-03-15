@@ -7,36 +7,51 @@ const email = ref('');
 const password1 = ref('');
 const password2 = ref('');
 const errors = ref({});
+const termsServices = ref(false);
 
-// const validEmail =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+const validEmail =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
 
 function checkForm(e) {
-  e.eventPreventDefault();
-  register();
+  e.preventDefault();
+  
+  errors.value = {};
+  
+  if (!name.value) errors.value.name = 'Nombre no valido';
+  if (!validEmail.test(email.value)) errors.value.email = 'Email no valido';
+  if (!password1.value || password1.value != password2.value) errors.value.password = 'Contraseña no valida';
+  if (!termsServices.value) errors.value.termsServices = 'Tienes que aceptar las condiciones de uso';
+  
+  if (!errors.value) register();
 }
 
 async function register() {
+    const data = {
+      "name": name.value,
+      "email": email.value,
+      "password": password1.value,
+    };
 
-  const data = {
-    "name": name.value,
-    "email": email.value,
-    "password": password1.value,
-  };
+    let response = await fetch("http://localhost:8000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
-  let response = await fetch("http://localhost:8000/api/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
+console.log(response.status);
 
-  let json = await response.json();
+let json = await response.json();
+//
+console.log(json);
+//
 
-  console.log(json);
-  
+    if (response.status == 200) {
+      // feedback valid notification
+    } else {
+      // feedback invalid notification
+    }
 }
-
 </script>
 
 <template>
@@ -51,7 +66,6 @@ async function register() {
           class="form-control"
           :class="{
             'is-invalid': errors.name,
-            'is-valid': name && !errors.name
           }"
           required
         />
@@ -69,7 +83,6 @@ async function register() {
           class="form-control"
           :class="{
             'is-invalid': errors.email,
-            'is-valid': email && !errors.email
           }"
           required
         />
@@ -87,13 +100,12 @@ async function register() {
           v-model="password1"
           class="form-control"
           :class="{
-            'is-invalid': errors.password1,
-            'is-valid': password1 && !errors.password1
+            'is-invalid': errors.password,
           }"
           required
         />
-        <div v-show="errors.password1" class="invalid-feedback">
-          {{ errors.password1 }}
+        <div v-show="errors.password" class="invalid-feedback">
+          {{ errors.password }}
         </div>
       </div>
 
@@ -105,20 +117,28 @@ async function register() {
           v-model="password2"
           class="form-control"
           :class="{
-            'is-invalid': errors.password2,
-            'is-valid': password2 && !errors.password2
+            'is-invalid': errors.password,
           }"
           required
         />
-        <div v-show="errors.password2" class="invalid-feedback">
-          {{ errors.password2 }}
-        </div>
       </div>
 
       <div class="form-check d-flex justify-content-center mb-5">
-        <input class="form-check-input me-2" type="checkbox" value="" id="terms" />
+        <input
+          id="terms"
+          type="checkbox"
+          v-model="termsServices"
+          class="form-check-input me-2"
+          :class="{
+            'is-invalid': errors.termsServices,
+            'is-valid': termsServices,
+          }"
+        />
         <label class="form-check-label" for="terms">
-          I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
+          I agree all statements in
+          <router-link :to="{name: 'legal-conditions'}" class="text-body">
+            <u>Terms of service</u>
+          </router-link>
         </label>
       </div>
 
@@ -128,7 +148,7 @@ async function register() {
 
       <p class="text-center text-muted mt-5 mb-0">
         Have already an account?
-        <router-link to="/login" class="fw-bold text-body">
+        <router-link :to="{name: 'login'}" class="fw-bold text-body">
           <u>Login here</u>
         </router-link>
       </p>

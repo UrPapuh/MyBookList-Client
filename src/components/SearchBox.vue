@@ -1,9 +1,7 @@
 <script setup>
-const props = defineProps([
-  'data'
-]);
+
 </script>
 
 <template>
-  <h2>{{ props.data }}</h2>
+  <h1>Searchbox</h1>
 </template>

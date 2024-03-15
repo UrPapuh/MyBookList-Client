@@ -11,29 +11,20 @@ const validEmail =  /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
 
 function checkForm(e) {
   e.preventDefault();
+  
   errors.value = {};
 
-  if (email.value) {
-    if (!validEmail.test(email.value)) {
-      errors.value.email = 'El correo es invalido';
-    }
-  } else {
-    errors.value.email = 'Campo obligatorio';
-  }
+  if (!validEmail.test(email.value)) errors.value.email = 'Email no valido';
+  if (!password.value) errors.value.password = 'Contraseña no valida';
 
-  if (!password.value) {
-    errors.value.password = 'Campo obligatorio';
-  }
-
-  if (!errors.value.email && !errors.value.password) {
-    login();
-  }
+  if (!errors.value) login();
 }
 
 async function login() {
   const data = {
     "email": email.value,
-    "password": password.value // hash (?)
+    "password": password.value, // hash (?)
+    "remember": remember.value
   };
 
   let options = {
@@ -47,22 +38,13 @@ async function login() {
   let response = await fetch("", options);
   let json = await response.json();
 
-  if (json.error) {
-    console.log("Error");
-  } else {
-    console.log("Exito");
-  }
+
+  // save rememberToken and redirect to a home page with user data
+  console.log(json);
 }
 </script>
 
 <template>
-  <!-- <header class="container-fluid pt-5 pb-4">
-    <div class="container">
-      <div class="row justify-content-center">
-        <img src="/favicon.ico" class="img-fluid" alt="Logo">
-      </div>
-    </div>
-  </header> -->
   <main class="w-100 p-4 d-flex justify-content-center">
     <form>
       <div class="form-outline mb-4">
@@ -74,7 +56,6 @@ async function login() {
           class="form-control"
           :class="{
             'is-invalid': errors.email,
-            'is-valid': email && !errors.email
           }"
           required
         />
@@ -93,7 +74,6 @@ async function login() {
           class="form-control"
           :class="{
             'is-invalid': errors.password,
-            'is-valid': password && !errors.password
           }"
           required
         />

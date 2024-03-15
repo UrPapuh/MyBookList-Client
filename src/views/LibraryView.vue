@@ -1,19 +1,28 @@
 <script setup>
-import { RouterLink } from 'vue-router';
 import TableView from '../components/TableView.vue';
 import CardView from '../components/CardView.vue';
 
 import { watch , computed, ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 // import { router } from '../router/index.js';
 
-const keyFilter = ref('');
-const authorFilter = ref('');
-const publisherFilter = ref('');
-const categoryFilter = ref('');
+const q = {
+  key: ref(''),
+  author: ref(''),
+  publisher: ref(''),
+  category: ref('')
+};
 
+onMounted(() => {
+  let query = useRoute().query;
 
-const query = computed (() => { return useRoute().query });
+  if (query.q) q.key.value = query.q;
+  if (query.author) q.author.value = query.author;
+  if (query.publisher) q.publisher.value = query.publisher;
+  if (query.category) q.category.value = query.category;
+
+  search();
+});
 
 const viewMode = computed (() => { return useRoute().query.mode });
 
@@ -21,27 +30,19 @@ const searchResults = ref({});
 const maxResults = 12; //Default = 10
 const startIndex = ref(0); //Default = 0
 
-onMounted(() => {
-  if (query.value.q) keyFilter.value = query.value.q;
-  if (query.value.author) authorFilter.value = query.value.author;
-  if (query.value.publisher) publisherFilter.value = query.value.publisher;
-  if (query.value.category) categoryFilter.value = query.value.category;
+watch(startIndex, () => {
+  search();
 });
 
-watch([keyFilter, authorFilter, publisherFilter, categoryFilter], () => {
+watch([q.key, q.author, q.publisher, q.category], () => {
   startIndex.value = 0;
-  // router.replace({
-  //   name: 'library', // Keep the current path
-  //   query: query.value // Update the query parameter
-  // });
-  // console.log(router);
 });
 
 const searchFilters = computed (() => {
-  let filters = `q=${keyFilter.value}`;
-  if (authorFilter.value) filters += ` inauthor:${authorFilter.value}`;
-  if (publisherFilter.value) filters += ` inpublisher:${publisherFilter.value}`;
-  if (categoryFilter.value) filters += ` subject:${categoryFilter.value}`;
+  let filters = `q=${q.key.value}`;
+  if (q.author.value) filters += ` inauthor:${q.author.value}`;
+  if (q.publisher.value) filters += ` inpublisher:${q.publisher.value}`;
+  if (q.category.value) filters += ` subject:${q.category.value}`;
   filters = filters.trim().replace(/ /g, '+');
   filters += `&printType=books&fields=totalItems,items(id,volumeInfo(title,authors,publisher,categories,imageLinks/smallThumbnail))&startIndex=${startIndex.value}&maxResults=${maxResults}`;
 
@@ -50,27 +51,93 @@ console.log(filters);
   return filters;
 });
 
-watch(searchFilters, async (params) => {
-    let response = await fetch(`https://www.googleapis.com/books/v1/volumes?${params}`);
+
+async function search() {
+    let response = await fetch(`https://www.googleapis.com/books/v1/volumes?${searchFilters.value}`);
     let json = await response.json();
 
-// console.log(response.status);
-// console.log(json);
-//
     if (json.items) searchResults.value = json;
-});
+};
 </script>
 
 <template>
   <div class="container">
     <h2>Busqueda avanzada</h2>
-    <input
-      type="text"
-      placeholder="Search..."
-      class="form-control mb-4"
-      v-model="keyFilter"
-    >
-    <div id="accordion">
+    <div class="input-group mb-4">
+      <input
+        type="text"
+        placeholder="Search..."
+        class="form-control"
+        v-model="q.key.value"
+      >
+      <div class="input-group-append">
+        <button 
+          type="button"
+          class="btn" 
+          @click="search()"
+          :class="{
+            disabled: !(q.key.value || q.author.value || q.publisher.value || q.category.value)
+          }"
+        >
+          <img src="../assets/icons/search-icon.svg" alt="Search">
+        </button>
+      </div>
+    </div>
+
+    <div class="accordion accordion-flush" id="extraFilters">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="extraFilters-header">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#extraFilters-body"
+            aria-expanded="true"
+            aria-controls="extraFilters-body"
+          >
+            Filters
+          </button>
+        </h2>
+        <div id="extraFilters-body" class="accordion-collapse collapse show" aria-labelledby="extraFilters-header" data-bs-parent="#extraFilters">
+          <div class="accordion-body">
+            <div class="form-group">
+              <label for="authorFilter">Author</label>
+              <input
+                type="text"
+                id="authorFilter"
+                placeholder="Search..."
+                class="form-control"
+                v-model="q.author.value"
+              >
+            </div>
+            <div class="form-group">
+              <label for="publisherFilter">Publisher</label>
+              <input
+                type="text"
+                id="publisherFilter"
+                placeholder="Search..."
+                class="form-control"
+                v-model="q.publisher.value"
+              >
+            </div>
+            <div class="form-group">
+              <label for="categoryFilter">Category</label>
+              <input
+                type="text"
+                id="categoryFilter"
+                placeholder="Search..."
+                class="form-control"
+                v-model="q.category.value"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- <div id="accordion">
       <div class="card">
         <div class="card-header" id="heading1">
           <h5 class="mb-0">
@@ -83,7 +150,7 @@ watch(searchFilters, async (params) => {
               type="text"
               placeholder="Search..."
               class="form-control"
-              v-model="authorFilter"
+              v-model="q.author.value"
             >
           </div>
         </div>
@@ -101,7 +168,7 @@ watch(searchFilters, async (params) => {
               type="text"
               placeholder="Search..."
               class="form-control"
-              v-model="publisherFilter"
+              v-model="q.publisher.value"
             >
           </div>
         </div>
@@ -119,12 +186,12 @@ watch(searchFilters, async (params) => {
               type="text"
               placeholder="Search..."
               class="form-control"
-              v-model="categoryFilter"
+              v-model="q.category.value"
             >
           </div>
         </div>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
     <!-- Results Options -->
     <div v-if="searchFilters && searchResults.items">
       <div class="row my-3 align-items-center">
@@ -132,7 +199,7 @@ watch(searchFilters, async (params) => {
         <div class="col-auto ms-auto">
           <div>
             <router-link
-              :to="{name: 'library', query: {mode: 'list'}}"
+              :to="{name: 'library', query: {...$route.query, mode: 'list'}}"
               role="button"
               class="btn btn-primary btn-sm ms-1"
               :class="{disabled: !viewMode || viewMode == 'list'}"
@@ -141,7 +208,7 @@ watch(searchFilters, async (params) => {
               <span class="d-none d-md-inline">&nbsp;Ver lista</span>
             </router-link>
             <router-link
-              :to="{name: 'library', query: {mode: 'card'}}"
+              :to="{name: 'library', query: {...$route.query, mode: 'card'}}"
               role="button"
               class="btn btn-primary btn-sm ms-1"
               :class="{disabled: viewMode == 'card'}"

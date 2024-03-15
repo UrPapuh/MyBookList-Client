@@ -45,23 +45,38 @@ import { RouterLink, RouterView } from 'vue-router';
 
 
                 <div class="order-0 order-md-1 d-flex flex-column flex-md-row align-items-center">
-
-                    <div class="">
+                    <!-- <div class="">
                       <router-link
                         :to="{name: 'login'}"
                         class="btn btn-primary">
                         Sign In
                       </router-link>
                     </div>
-
                     <div class="">
                       <router-link
                         :to="{name: 'register'}"
                         class="btn btn-primary">
                         Sign Up
                       </router-link>
+                    </div> -->
+                    <div class="dropdown">
+                      <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="./assets/icons/user-icon.svg" alt="" width="32" height="32" class="rounded-circle me-2">
+                        <strong>name</strong>
+                      </a>
+                      <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser">
+                        <li>
+                          <router-link :to="{name: 'settings'}" class="dropdown-item">Settings</router-link>
+                        </li>
+                        <li>
+                          <router-link :to="{name: 'profile'}" class="dropdown-item">Profile</router-link>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <router-link :to="{name: 'logout'}" class="dropdown-item">Sign out</router-link>
+                        </li>
+                      </ul>
                     </div>
-
                 </div>
 
                 <div class="order-1 order-md-0 me-auto">
@@ -77,7 +92,7 @@ import { RouterLink, RouterView } from 'vue-router';
         </div>
       </div>
     </nav>
-    <!-- <SearchBox /> -->
+    <!-- <SearchBox/> -->
   </header>
 
   <main class="container-fluid p-5">

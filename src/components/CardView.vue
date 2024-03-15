@@ -15,13 +15,13 @@ const props = defineProps([
       :to="{name: 'book', params: {bookId: result.id}}"
       class="card text-center w-100 galleryBox"
     >
-      <!-- <img
+      <img
         v-if="result.volumeInfo.imageLinks.smallThumbnail"
         :src="result.volumeInfo.imageLinks.smallThumbnail"
         class="lazy card-img-top img-fluid"
-      /> -->
+      />
       <img
-
+        v-else
         src="../assets/icons/book-icon.svg"
         :alt="index"
         class="lazy card-img-top img-fluid"

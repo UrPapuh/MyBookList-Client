@@ -46,12 +46,13 @@ console.log(json);
 
 
       <div class="order-0 order-md-1 p-2">
-        <!-- <img
+        <img
           v-if="searchResults.volumeInfo.imageLinks.smallThumbnail"
           :src="searchResults.volumeInfo.imageLinks.smallThumbnail"
-          class="img-fluid"
-        /> -->
+          class="img-fluid card-img-top"
+        />
         <img
+        v-else
           src="../assets/icons/book-icon.svg"
           alt="book-icon"
           class="img-fluid card-img-top"
