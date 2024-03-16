@@ -2,8 +2,6 @@
 import { onMounted, computed, ref } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 
-
-
 const bookId = computed (() => { return useRoute().params.bookId });
 
 const searchResults = ref('');

@@ -22,7 +22,7 @@ const props = defineProps([
       />
       <img
         v-else
-        src="../assets/icons/book-icon.svg"
+        src="@/assets/icons/book-icon.svg"
         :alt="index"
         class="lazy card-img-top img-fluid"
       />
