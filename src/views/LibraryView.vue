@@ -1,25 +1,24 @@
 <script setup>
-import TableView from '../components/TableView.vue';
-import CardView from '../components/CardView.vue';
+import TableView from '@/components/TableView.vue';
+import CardView from '@/components/CardView.vue';
 
 import { watch , computed, ref, onMounted } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
-// import { router } from '../router/index.js';
 
-const q = {
-  key: ref(''),
-  author: ref(''),
-  publisher: ref(''),
-  category: ref('')
-};
+const q = ref({
+  key: '',
+  author: '',
+  publisher: '',
+  category: ''
+});
 
 onMounted(() => {
   let query = useRoute().query;
 
-  if (query.q) q.key.value = query.q;
-  if (query.author) q.author.value = query.author;
-  if (query.publisher) q.publisher.value = query.publisher;
-  if (query.category) q.category.value = query.category;
+  if (query.q) q.value.key = query.q;
+  if (query.author) q.value.author = query.author;
+  if (query.publisher) q.value.publisher = query.publisher;
+  if (query.category) q.value.category = query.category;
 
   search();
 });
@@ -34,15 +33,15 @@ watch(startIndex, () => {
   search();
 });
 
-watch([q.key, q.author, q.publisher, q.category], () => {
+watch([q.value.key, q.value.author, q.value.publisher, q.value.category], () => {
   startIndex.value = 0;
 });
 
 const searchFilters = computed (() => {
-  let filters = `q=${q.key.value}`;
-  if (q.author.value) filters += ` inauthor:${q.author.value}`;
-  if (q.publisher.value) filters += ` inpublisher:${q.publisher.value}`;
-  if (q.category.value) filters += ` subject:${q.category.value}`;
+  let filters = `q=${q.value.key}`;
+  if (q.value.author) filters += ` inauthor:${q.value.author}`;
+  if (q.value.publisher) filters += ` inpublisher:${q.value.publisher}`;
+  if (q.value.category) filters += ` subject:${q.value.category}`;
   filters = filters.trim().replace(/ /g, '+');
   filters += `&printType=books&fields=totalItems,items(id,volumeInfo(title,authors,publisher,categories,imageLinks/smallThumbnail))&startIndex=${startIndex.value}&maxResults=${maxResults}`;
 
@@ -53,10 +52,10 @@ console.log(filters);
 
 
 async function search() {
-    let response = await fetch(`https://www.googleapis.com/books/v1/volumes?${searchFilters.value}`);
-    let json = await response.json();
+  let response = await fetch(`https://www.googleapis.com/books/v1/volumes?${searchFilters.value}`);
+  let json = await response.json();
 
-    if (json.items) searchResults.value = json;
+  if (json.items) searchResults.value = json;
 };
 </script>
 
@@ -68,7 +67,7 @@ async function search() {
         type="text"
         placeholder="Search..."
         class="form-control"
-        v-model="q.key.value"
+        v-model="q.key"
       >
       <div class="input-group-append">
         <button 
@@ -76,10 +75,10 @@ async function search() {
           class="btn" 
           @click="search()"
           :class="{
-            disabled: !(q.key.value || q.author.value || q.publisher.value || q.category.value)
+            disabled: !(q.key || q.author || q.publisher || q.category)
           }"
         >
-          <img src="../assets/icons/search-icon.svg" alt="Search">
+          <img src="@/assets/icons/search-icon.svg" alt="Search">
         </button>
       </div>
     </div>
@@ -107,7 +106,7 @@ async function search() {
                 id="authorFilter"
                 placeholder="Search..."
                 class="form-control"
-                v-model="q.author.value"
+                v-model="q.author"
               >
             </div>
             <div class="form-group">
@@ -117,7 +116,7 @@ async function search() {
                 id="publisherFilter"
                 placeholder="Search..."
                 class="form-control"
-                v-model="q.publisher.value"
+                v-model="q.publisher"
               >
             </div>
             <div class="form-group">
@@ -127,7 +126,7 @@ async function search() {
                 id="categoryFilter"
                 placeholder="Search..."
                 class="form-control"
-                v-model="q.category.value"
+                v-model="q.category"
               >
             </div>
           </div>
@@ -135,63 +134,6 @@ async function search() {
       </div>
     </div>
 
-
-
-    <!-- <div id="accordion">
-      <div class="card">
-        <div class="card-header" id="heading1">
-          <h5 class="mb-0">
-            <button class="btn collapsed" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">Author</button>
-          </h5>
-        </div>
-        <div id="collapse1" class="collapse show" aria-labelledby="heading1" data-parent="#accordion">
-          <div class="card-body">
-            <input
-              type="text"
-              placeholder="Search..."
-              class="form-control"
-              v-model="q.author.value"
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header" id="heading2">
-          <h5 class="mb-0">
-            <button class="btn collapsed" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="collapse2">Publisher</button>
-          </h5>
-        </div>
-        <div id="collapse2" class="collapse show" aria-labelledby="heading2" data-parent="#accordion">
-          <div class="card-body">
-            <input
-              type="text"
-              placeholder="Search..."
-              class="form-control"
-              v-model="q.publisher.value"
-            >
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-header" id="heading3">
-          <h5 class="mb-0">
-            <button class="btn collapsed" data-toggle="collapse" data-target="#collapse3" aria-expanded="true" aria-controls="collapse3">Category</button>
-          </h5>
-        </div>
-        <div id="collapse3" class="collapse show" aria-labelledby="heading3" data-parent="#accordion">
-          <div class="card-body">
-            <input
-              type="text"
-              placeholder="Search..."
-              class="form-control"
-              v-model="q.category.value"
-            >
-          </div>
-        </div>
-      </div> -->
-    <!-- </div> -->
     <!-- Results Options -->
     <div v-if="searchFilters && searchResults.items">
       <div class="row my-3 align-items-center">
@@ -204,7 +146,7 @@ async function search() {
               class="btn btn-primary btn-sm ms-1"
               :class="{disabled: !viewMode || viewMode == 'list'}"
             >
-              <img href="../assets/icons/table-icon.svg" class="fonticon-table" />
+              <img href="@/assets/icons/table-icon.svg" class="fonticon-table" />
               <span class="d-none d-md-inline">&nbsp;Ver lista</span>
             </router-link>
             <router-link
@@ -213,7 +155,7 @@ async function search() {
               class="btn btn-primary btn-sm ms-1"
               :class="{disabled: viewMode == 'card'}"
             >
-              <img href="../assets/icons/grid-icon.svg" class="fonticon-table" />
+              <img href="@/assets/icons/grid-icon.svg" class="fonticon-table" />
               <span class="d-none d-md-inline">&nbsp;Ver cuadricula</span>
             </router-link>
           </div>
